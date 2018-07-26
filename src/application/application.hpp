@@ -15,9 +15,11 @@ namespace shader_editor {
         static void create(int argc, char **argv);
 
         int run();
+        Glib::RefPtr<Gio::Settings> get_settings();
 
     private:
         Glib::RefPtr<Gtk::Application> gtk_application;
+        Glib::RefPtr<Gio::Settings> settings;
 
         application(int argc, char **argv);
     };

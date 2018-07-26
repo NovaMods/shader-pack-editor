@@ -47,7 +47,7 @@ namespace shader_editor {
             }
 
             jv = json[key];
-            if(!jv.is_number_integer()) {
+            if(!jv.is_string()) {
                 throw type_mismatch_exception("string", json.type_name());
             } else {
                 val = Glib::ustring(jv.get<std::string>());
@@ -104,12 +104,12 @@ namespace shader_editor {
             }
         };
 
-        class missing_value_exception: public std::exception {
+        class missing_value_exception : public std::exception {
         private:
             Glib::ustring key;
 
         public:
-            missing_value_exception(Glib::ustring key) : key(key) {}
+            missing_value_exception(Glib::ustring key) : key(std::move(key)) {}
 
             const char *what() const noexcept override {
                 return Glib::ustring::compose("Entry with key %1 not found", key).c_str();

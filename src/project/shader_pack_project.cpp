@@ -31,12 +31,11 @@ namespace shader_editor {
             return type_result<std::shared_ptr<shader_pack_project>>("Read bytes didn't match file size, did the file change its size while reading?");
         }
         buff[file_size] = '\0';
-
         input_stream->close();
 
-        nlohmann::json structure = nlohmann::json::parse(buff);
         auto project = from_scratch();
         try {
+            nlohmann::json structure = nlohmann::json::parse(buff);
             shader_editor::util::assign_from_json(structure, "name", project->name);
         } catch (const nlohmann::json::parse_error &e) {
             return type_result<std::shared_ptr<shader_pack_project>>(e.what());

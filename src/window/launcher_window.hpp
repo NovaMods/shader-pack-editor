@@ -10,10 +10,14 @@
 namespace shader_editor {
     class launcher_window : public Gtk::Window {
     private:
-        Glib::RefPtr<Gdk::Pixbuf> icon = Gdk::Pixbuf::create_from_resource("/com/continuum/nova/global/icon.png");
+        Glib::RefPtr<Gdk::Pixbuf> icon = Gdk::Pixbuf::create_from_resource("/com/continuum/shaderpackeditor/global/icon.png");
         Gtk::Image logo = Gtk::Image(icon);
 
         Gtk::VBox container;
+        Gtk::Label program_name_label;
+
+        Gtk::Button new_project_btn;
+        void on_new_project_clicked();
 
         Gtk::Button open_project_btn;
         void on_open_project_clicked();

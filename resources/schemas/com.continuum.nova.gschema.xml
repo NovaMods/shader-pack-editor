@@ -1,0 +1,8 @@
+<schemalist>
+    <schema id="com.continuum.shaderpackeditor" path="/">
+        <key type="s" name="some-value">
+            <default>"A value"</default>
+            <summary>Some value</summary>
+        </key>
+    </schema>
+</schemalist>
