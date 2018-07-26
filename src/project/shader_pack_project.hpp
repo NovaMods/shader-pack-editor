@@ -7,15 +7,16 @@
 
 #include <memory>
 #include <glibmm.h>
+#include "../util/result.hpp"
 
 namespace shader_editor {
     class shader_pack_project {
     public:
-        static std::shared_ptr<shader_pack_project> from_file(Glib::ustring file_path);
+        static type_result<std::shared_ptr<shader_pack_project>> from_file(Glib::ustring file_path);
         static std::shared_ptr<shader_pack_project> from_scratch();
 
-    private:
         Glib::ustring name;
+    private:
         shader_pack_project();
     };
 }
