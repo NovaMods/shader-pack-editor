@@ -21,7 +21,7 @@ namespace shader_editor {
         }
 
         gsize file_size = static_cast<gsize>(file->query_info("standard::size")->get_size()); // cast because this returns goffset for some reason...
-                                                                                         // which is signed... Did you ever see a negative file size?
+                                                                                              // which is signed... Did you ever see a negative file size?
         auto *buff = new char[file_size + 1];
         auto input_stream = file->read();
 
@@ -45,6 +45,7 @@ namespace shader_editor {
             return type_result<std::shared_ptr<shader_pack_project>>(e.what());
         }
 
+        project->root = file->get_parent()->get_path();
         return type_result<std::shared_ptr<shader_pack_project>>(project);
     }
 

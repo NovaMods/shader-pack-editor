@@ -61,16 +61,18 @@ namespace shader_editor {
             }
 
             settings = Glib::wrap(g_settings_new_full(schema->gobj(), nullptr, nullptr));
-            std::cout << settings->get_string("some-value") << std::endl;
-            settings->set_string("some-value", "A new value");
         }
 
         shader_editor::launcher_window window;
-        window.show_all();
-        return gtk_application->run(window);
+        std::cout << window.get_window() << std::endl;
+        return gtk_application->run(*window.get_window());
     }
 
     Glib::RefPtr<Gio::Settings> application::get_settings() {
         return settings;
+    }
+
+    void application::load(std::shared_ptr<shader_editor::shader_pack_project> project) {
+
     }
 }

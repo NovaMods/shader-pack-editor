@@ -16,6 +16,8 @@ namespace shader_editor {
         static std::shared_ptr<shader_pack_project> from_scratch();
 
         Glib::ustring name;
+        Glib::ustring root;
+
     private:
         shader_pack_project();
     };

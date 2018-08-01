@@ -3,5 +3,6 @@
     <gresource prefix="/com/continuum/shaderpackeditor">
         <file>global/icon.png</file>
         <file>schemas/gschemas.compiled</file>
+        <file>ui/launcher_ui.glade</file>
     </gresource>
 </gresources>

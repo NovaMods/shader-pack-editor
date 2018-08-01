@@ -6,24 +6,21 @@
 #define NOVASHADEREDITORGTK_LAUNCHER_WINDOW_HPP
 
 #include <gtkmm.h>
+#include "glade_window.hpp"
 
 namespace shader_editor {
-    class launcher_window : public Gtk::Window {
+    class launcher_window : public glade_window {
     private:
-        Glib::RefPtr<Gdk::Pixbuf> icon = Gdk::Pixbuf::create_from_resource("/com/continuum/shaderpackeditor/global/icon.png");
-        Gtk::Image logo = Gtk::Image(icon);
+        std::shared_ptr<Gtk::Window> window; // Store to auto delete it on deconstruction
+        void setup();
+        void open_clicked();
 
-        Gtk::VBox container;
-        Gtk::Label program_name_label;
-
-        Gtk::Button new_project_btn;
-        void on_new_project_clicked();
-
-        Gtk::Button open_project_btn;
-        void on_open_project_clicked();
+        bool name_ok = false;
+        bool path_ok = false;
 
     public:
         launcher_window();
+        Gtk::Window *get_window() override;
     };
 }
 

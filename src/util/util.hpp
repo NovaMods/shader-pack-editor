@@ -7,7 +7,8 @@
 
 #include <nlohmann/json.hpp>
 #include <exception>
-#include <glibmm.h>
+#include <utility>
+#include <gtkmm.h>
 
 namespace shader_editor {
     class util {
@@ -97,7 +98,8 @@ namespace shader_editor {
             Glib::ustring real;
 
         public:
-            type_mismatch_exception(Glib::ustring expected, Glib::ustring real): expected(expected), real(real) {}
+            type_mismatch_exception(Glib::ustring expected, Glib::ustring real): expected(std::move(expected)), real(
+                    std::move(real)) {}
 
             const char *what() const noexcept override {
                 return Glib::ustring::compose("Expected type %1, but got %2", expected, real).c_str();

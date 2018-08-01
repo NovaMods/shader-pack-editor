@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <gtkmm.h>
+#include "../project/shader_pack_project.hpp"
 
 namespace shader_editor {
     class application {
@@ -16,6 +17,8 @@ namespace shader_editor {
 
         int run();
         Glib::RefPtr<Gio::Settings> get_settings();
+
+        void load(std::shared_ptr<shader_editor::shader_pack_project> project);
 
     private:
         Glib::RefPtr<Gtk::Application> gtk_application;
