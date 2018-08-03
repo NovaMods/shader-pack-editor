@@ -98,7 +98,7 @@ namespace shader_editor {
             Glib::ustring real;
 
         public:
-            type_mismatch_exception(Glib::ustring expected, Glib::ustring real): expected(std::move(expected)), real(
+            type_mismatch_exception(Glib::ustring expected, Glib::ustring real) : expected(std::move(expected)), real(
                     std::move(real)) {}
 
             const char *what() const noexcept override {

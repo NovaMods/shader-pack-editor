@@ -4,5 +4,8 @@
         <file>global/icon.png</file>
         <file>schemas/gschemas.compiled</file>
         <file>ui/launcher_ui.glade</file>
+
+        <!-- Below are all language resources -->
+        <file>language/de/LC_MESSAGES/editor.mo</file>
     </gresource>
 </gresources>

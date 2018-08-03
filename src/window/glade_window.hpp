@@ -14,6 +14,7 @@ namespace shader_editor {
         Glib::RefPtr<Gtk::Builder> content;
         explicit glade_window(const Glib::ustring &resource_name) {
             content = Gtk::Builder::create_from_resource(resource_name);
+            content->set_translation_domain("editor");
         }
 
         template <typename T>

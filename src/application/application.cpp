@@ -4,15 +4,23 @@
 
 #include <iostream>
 
+#include <glibmm/i18n.h>
 #include "application.hpp"
 #include "../window/launcher_window.hpp"
 #include "../util/stream_utils.hpp"
+#include <cstdlib>
 
 #ifdef __cplusplus
 extern "C" {
-#include "../../resources/resources.h"
-};
 #endif
+#include "../../resources/resources.h"
+#ifdef __cplusplus
+}
+#endif
+
+#define COPY_LANG(lang) \
+shader_editor::stream_utils::copy_resource_to_file("/com/continuum/shaderpackeditor/language/" #lang "/LC_MESSAGES/editor.mo",\
+    language_dir->get_child(#lang "/LC_MESSAGES/editor.mo"), true)
 
 namespace shader_editor {
     void application::create(int argc, char **argv) {
@@ -25,20 +33,33 @@ namespace shader_editor {
     }
 
     int application::run() {
-        auto config_dir = Gio::File::create_for_path("config");
-        if(!config_dir->query_exists() || config_dir->query_file_type() != Gio::FileType::FILE_TYPE_DIRECTORY) {
-            if(!config_dir->make_directory()) {
-                Gtk::MessageDialog dialog("Failed to create config directory!", false, Gtk::MESSAGE_ERROR);
-                dialog.set_title("Config");
+        auto language_dir = Gio::File::create_for_path("language");
+        if(!language_dir->query_exists() || language_dir->query_file_type() != Gio::FileType::FILE_TYPE_DIRECTORY) {
+            if(!language_dir->make_directory()) {
+                Gtk::MessageDialog dialog("Failed to create language directory!", false, Gtk::MESSAGE_ERROR);
+                dialog.set_title("Language");
                 dialog.run();
                 return EXIT_FAILURE;
             }
         }
-        auto settings_schema_file = config_dir->get_child("gschemas.compiled");
-        if(!settings_schema_file->query_exists() || settings_schema_file->query_file_type() != Gio::FileType::FILE_TYPE_REGULAR) {
-            shader_editor::stream_utils::copy(Gio::Resource::open_stream_global("/com/continuum/shaderpackeditor/schemas/gschemas.compiled"),
-                                              settings_schema_file->append_to());
+
+        COPY_LANG(de);
+
+        setlocale(LC_ALL, "");
+        bindtextdomain("editor", language_dir->get_path().c_str());
+        textdomain("editor");
+
+        auto config_dir = Gio::File::create_for_path("config");
+        if(!config_dir->query_exists() || config_dir->query_file_type() != Gio::FileType::FILE_TYPE_DIRECTORY) {
+            if(!config_dir->make_directory()) {
+                Gtk::MessageDialog dialog(_("Failed to create config directory!"), false, Gtk::MESSAGE_ERROR);
+                dialog.set_title(_("Config"));
+                dialog.run();
+                return EXIT_FAILURE;
+            }
         }
+        shader_editor::stream_utils::copy_resource_to_file("/com/continuum/shaderpackeditor/schemas/gschemas.compiled",
+                                                           config_dir->get_child("gschemas.compiled"), true);
 
         {
             GError *err = nullptr;
@@ -46,7 +67,7 @@ namespace shader_editor {
             Glib::RefPtr<Gio::SettingsSchemaSource> schema_source =
                     Glib::wrap(g_settings_schema_source_new_from_directory("config", g_settings_schema_source_get_default(), FALSE, &err));
             if(err) {
-                Gtk::MessageDialog dialog("Failed to load config schema!", false, Gtk::MESSAGE_ERROR);
+                Gtk::MessageDialog dialog(_("Failed to load config schema!"), false, Gtk::MESSAGE_ERROR);
                 dialog.set_title("Config");
                 dialog.run();
                 return EXIT_FAILURE;
@@ -54,8 +75,8 @@ namespace shader_editor {
 
             auto schema = schema_source->lookup("com.continuum.shaderpackeditor", false);
             if(!schema) {
-                Gtk::MessageDialog dialog("Failed to lookup config schema!", false, Gtk::MESSAGE_ERROR);
-                dialog.set_title("Config");
+                Gtk::MessageDialog dialog(_("Failed to lookup config schema!"), false, Gtk::MESSAGE_ERROR);
+                dialog.set_title(_("Config"));
                 dialog.run();
                 return EXIT_FAILURE;
             }
@@ -64,7 +85,6 @@ namespace shader_editor {
         }
 
         shader_editor::launcher_window window;
-        std::cout << window.get_window() << std::endl;
         return gtk_application->run(*window.get_window());
     }
 

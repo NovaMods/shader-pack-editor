@@ -1,0 +1,57 @@
+# German translations for PACKAGE package.
+# Copyright (C) 2018 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Jannis Lübke <business.janrupf@gmail.com>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: business.janrupf@gmail.com\n"
+"POT-Creation-Date: 2018-08-03 19:26+0200\n"
+"PO-Revision-Date: 2018-08-03 19:21+0200\n"
+"Last-Translator: Jannis Lübke <business.janrupf@gmail.com>\n"
+"Language-Team: German\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.7\n"
+
+#: resources/ui/launcher_ui.glade:27
+msgid "<span font=\"20\">Nova Shaderpack editor</span>"
+msgstr "<span font=\"20\">Nova Shaderpack editor</span>"
+
+#: resources/ui/launcher_ui.glade:141
+msgid "Choose project path"
+msgstr "Projekt Ordner auswählen"
+
+#: src/application/application.cpp:56 src/application/application.cpp:79
+msgid "Config"
+msgstr ""
+
+#: src/application/application.cpp:55
+#, fuzzy
+msgid "Failed to create config directory!"
+msgstr "Fehler beim laden des Konfigurations Schemas!"
+
+#: src/application/application.cpp:70
+msgid "Failed to load config schema!"
+msgstr "Fehler beim laden des Konfigurations Schemas!"
+
+#: src/application/application.cpp:78
+#, fuzzy
+msgid "Failed to lookup config schema!"
+msgstr "Fehler beim laden des Konfigurations Schemas!"
+
+#: resources/ui/launcher_ui.glade:103
+msgid "Name:"
+msgstr "Name:"
+
+#: resources/ui/launcher_ui.glade:7
+msgid "Nova Shaderpackeditor - Launcher"
+msgstr "Nova Shaderpackeditor - Launcher"
+
+#: resources/ui/launcher_ui.glade:115
+msgid "Path:"
+msgstr "Pfad:"

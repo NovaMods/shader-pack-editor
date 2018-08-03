@@ -2,6 +2,8 @@
 // Created by jannis on 25.07.18.
 //
 
+#include <glibmm/i18n.h>
+
 #include <iostream>
 #include "launcher_window.hpp"
 #include "../project/shader_pack_project.hpp"
@@ -40,13 +42,13 @@ namespace shader_editor {
     }
 
     void launcher_window::open_clicked() {
-        Gtk::FileChooserDialog dialog("Open project file");
+        Gtk::FileChooserDialog dialog(_("Open project file"));
         auto filter = Gtk::FileFilter::create();
         filter->add_mime_type("application/json");
         filter->set_name("Json");
         dialog.add_filter(filter);
-        dialog.add_button("_Open", Gtk::ResponseType::RESPONSE_ACCEPT);
-        dialog.add_button("_Cancel", Gtk::ResponseType::RESPONSE_CANCEL);
+        dialog.add_button(_("_Open"), Gtk::ResponseType::RESPONSE_ACCEPT);
+        dialog.add_button(_("_Cancel"), Gtk::ResponseType::RESPONSE_CANCEL);
 
         if(dialog.run() == Gtk::ResponseType::RESPONSE_ACCEPT) {
             auto result = shader_pack_project::from_file(dialog.get_filename());
@@ -54,7 +56,7 @@ namespace shader_editor {
                 window->hide();
                 application::instance->load(result.obj);
             } else {
-                Gtk::MessageDialog err_dialog("Failed to open project", false, Gtk::MessageType::MESSAGE_ERROR, Gtk::ButtonsType::BUTTONS_OK, true);
+                Gtk::MessageDialog err_dialog(_("Failed to open project"), false, Gtk::MessageType::MESSAGE_ERROR, Gtk::ButtonsType::BUTTONS_OK, true);
                 err_dialog.set_secondary_text(result.err_message);
                 err_dialog.run();
             }
