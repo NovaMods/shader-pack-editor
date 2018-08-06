@@ -4,10 +4,12 @@
 
 #include <iostream>
 
+#include <giomm/settings.h>
 #include <glibmm/i18n.h>
 #include "application.hpp"
 #include "../window/launcher_window.hpp"
 #include "../util/stream_utils.hpp"
+#include "../window/main_window.hpp"
 #include <cstdlib>
 
 #ifdef __cplusplus
@@ -19,7 +21,7 @@ extern "C" {
 #endif
 
 #define COPY_LANG(lang) \
-shader_editor::stream_utils::copy_resource_to_file("/com/continuum/shaderpackeditor/language/" #lang "/LC_MESSAGES/editor.mo",\
+stream_utils::copy_resource_to_file("/com/continuum/shaderpackeditor/language/" #lang "/LC_MESSAGES/editor.mo",\
     language_dir->get_child(#lang "/LC_MESSAGES/editor.mo"), true)
 
 namespace shader_editor {
@@ -29,7 +31,7 @@ namespace shader_editor {
 
     application::application(int argc, char **argv) {
         gtk_application = Gtk::Application::create(argc, argv, "com.continuum.nova.shadereditor");
-        Glib::wrap(nova_get_resource())->register_global();
+        g_resources_register(nova_get_resource());
     }
 
     int application::run() {
@@ -58,7 +60,7 @@ namespace shader_editor {
                 return EXIT_FAILURE;
             }
         }
-        shader_editor::stream_utils::copy_resource_to_file("/com/continuum/shaderpackeditor/schemas/gschemas.compiled",
+        stream_utils::copy_resource_to_file("/com/continuum/shaderpackeditor/schemas/gschemas.compiled",
                                                            config_dir->get_child("gschemas.compiled"), true);
 
         {
@@ -84,15 +86,26 @@ namespace shader_editor {
             settings = Glib::wrap(g_settings_new_full(schema->gobj(), nullptr, nullptr));
         }
 
-        shader_editor::launcher_window window;
-        return gtk_application->run(*window.get_window());
+        launcher_window launcher_window;
+        dynamic_cast<Gtk::Dialog *>(launcher_window.get_window())->run();
+
+        return load_current_project();
     }
 
     Glib::RefPtr<Gio::Settings> application::get_settings() {
         return settings;
     }
 
-    void application::load(std::shared_ptr<shader_editor::shader_pack_project> project) {
+    void application::set_current_project(const std::shared_ptr<shader_pack_project> &project) {
+        current_project = project;
+    }
 
+    int application::load_current_project() {
+        if(!current_project) {
+            return EXIT_SUCCESS;
+        }
+
+        main_window window;
+        return gtk_application->run(*window.get_window());
     }
 }

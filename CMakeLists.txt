@@ -1,7 +1,6 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.5.2)
 
 find_package(PkgConfig REQUIRED)
-
 pkg_check_modules(GTKMM gtkmm-3.0)
 
 project(nova-shader-editor)
@@ -22,7 +21,7 @@ set(THIRD_PARTY_INCLUDE_DIRS
 
 include_directories(${GTKMM_INCLUDE_DIRS} ${THIRD_PARTY_INCLUDE_DIRS})
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 
 set(RESOURCE_GEN_SOURCE
         ${CMAKE_CURRENT_LIST_DIR}/resources/resources.c
@@ -39,7 +38,7 @@ set(NOVA_SHADER_EDITOR_SOURCE
         ${CMAKE_CURRENT_LIST_DIR}/src/util/result.hpp
         ${CMAKE_CURRENT_LIST_DIR}/src/util/util.hpp
         ${CMAKE_CURRENT_LIST_DIR}/src/util/stream_utils.hpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/window/glade_window.hpp src/util/file_utils.hpp)
+        ${CMAKE_CURRENT_LIST_DIR}/src/window/glade_window.hpp src/util/file_utils.hpp src/window/main_window.cpp src/window/main_window.hpp)
 
 add_executable(nova-shader-editor ${NOVA_SHADER_EDITOR_SOURCE} ${RESOURCE_GEN_SOURCE})
 

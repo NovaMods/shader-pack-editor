@@ -23,6 +23,8 @@ namespace shader_editor {
                 sigc::mem_fun(*this, &launcher_window::open_clicked));
 
         auto *new_project_ok = get_widget<Gtk::Button>("new_project_ok");
+        new_project_ok->signal_clicked().connect(sigc::mem_fun(this, &launcher_window::new_project_ok_clicked));
+
         auto *new_project_name = get_widget<Gtk::Entry>("new_project_name");
         auto *new_project_path = get_widget<Gtk::FileChooserButton>("new_project_path");
 
@@ -54,13 +56,20 @@ namespace shader_editor {
             auto result = shader_pack_project::from_file(dialog.get_filename());
             if(result) {
                 window->hide();
-                application::instance->load(result.obj);
+                application::instance->set_current_project(result.obj);
             } else {
                 Gtk::MessageDialog err_dialog(_("Failed to open project"), false, Gtk::MessageType::MESSAGE_ERROR, Gtk::ButtonsType::BUTTONS_OK, true);
                 err_dialog.set_secondary_text(result.err_message);
                 err_dialog.run();
             }
         }
+    }
+
+    void launcher_window::new_project_ok_clicked() {
+        auto project = shader_pack_project::from_scratch();
+        project->name = get_widget<Gtk::Entry>("new_project_name")->get_text();
+        project->root = get_widget<Gtk::FileChooserButton>("new_project_path")->get_filename();
+        application::instance->set_current_project(project);
     }
 
 }

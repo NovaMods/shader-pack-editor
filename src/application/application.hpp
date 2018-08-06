@@ -18,13 +18,16 @@ namespace shader_editor {
         int run();
         Glib::RefPtr<Gio::Settings> get_settings();
 
-        void load(std::shared_ptr<shader_editor::shader_pack_project> project);
+        void set_current_project(const std::shared_ptr<shader_editor::shader_pack_project> &project);
 
     private:
         Glib::RefPtr<Gtk::Application> gtk_application;
         Glib::RefPtr<Gio::Settings> settings;
+        std::shared_ptr<shader_editor::shader_pack_project> current_project;
 
         application(int argc, char **argv);
+
+        int load_current_project();
     };
 }
 
