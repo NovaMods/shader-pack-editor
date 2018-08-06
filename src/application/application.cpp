@@ -86,8 +86,10 @@ namespace shader_editor {
             settings = Glib::wrap(g_settings_new_full(schema->gobj(), nullptr, nullptr));
         }
 
-        launcher_window launcher_window;
-        dynamic_cast<Gtk::Dialog *>(launcher_window.get_window())->run();
+        {
+            launcher_window launcher_window;
+            dynamic_cast<Gtk::Dialog *>(launcher_window.get_window())->run();
+        }
 
         return load_current_project();
     }

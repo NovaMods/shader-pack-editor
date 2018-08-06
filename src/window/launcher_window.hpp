@@ -11,6 +11,9 @@
 namespace shader_editor {
     class launcher_window : public glade_window {
     private:
+#ifndef G_OS_UNIX
+        Gtk::Dialog new_project_dialog;
+#endif
         std::shared_ptr<Gtk::Dialog> window; // Store to auto delete it on deconstruction
         void setup();
         void open_clicked();

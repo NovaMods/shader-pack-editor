@@ -78,8 +78,12 @@
   </object>
   <object class="GtkDialog" id="window">
     <property name="can_focus">False</property>
-    <property name="icon">com/continuum/shaderpackeditor/global/icon.png</property>
+    <property name="title" translatable="yes">Nova Shadereditor</property>
+    <property name="resizable">False</property>
     <property name="type_hint">dialog</property>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="can_focus">False</property>
