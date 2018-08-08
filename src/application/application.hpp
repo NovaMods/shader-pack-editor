@@ -11,23 +11,24 @@
 
 namespace shader_editor {
     class application {
+    private:
+        Glib::RefPtr<Gtk::Application> gtk_application;
+        Glib::RefPtr<Gio::Settings> settings;
+        std::shared_ptr<shader_pack_project> current_project;
+
+        application(int argc, char **argv);
+
+        int load_current_project();
+
     public:
-        static std::shared_ptr<shader_editor::application> instance;
+        static std::shared_ptr<application> instance;
         static void create(int argc, char **argv);
 
         int run();
         Glib::RefPtr<Gio::Settings> get_settings();
 
-        void set_current_project(const std::shared_ptr<shader_editor::shader_pack_project> &project);
-
-    private:
-        Glib::RefPtr<Gtk::Application> gtk_application;
-        Glib::RefPtr<Gio::Settings> settings;
-        std::shared_ptr<shader_editor::shader_pack_project> current_project;
-
-        application(int argc, char **argv);
-
-        int load_current_project();
+        void set_current_project(const std::shared_ptr<shader_pack_project> &project);
+        std::shared_ptr<shader_pack_project> get_current_project();
     };
 }
 

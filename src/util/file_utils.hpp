@@ -5,7 +5,8 @@
 #ifndef NOVA_SHADER_EDITOR_FILE_UTIL_HPP
 #define NOVA_SHADER_EDITOR_FILE_UTIL_HPP
 
-#include <giomm.h>
+#include <glib/gi18n.h>
+#include <gtkmm.h>
 #include <utility>
 
 namespace shader_editor {
@@ -18,7 +19,7 @@ namespace shader_editor {
 
             ensure_directory(file->get_parent());
             if(!file->create_file()) {
-                throw file_creation_error(Glib::ustring::compose("Failed to create file %1", file->get_path()));
+                throw file_creation_error(Glib::ustring::compose(_("Failed to create file %1"), file->get_path()));
             }
         }
 
@@ -28,7 +29,19 @@ namespace shader_editor {
             }
 
             if(!dir->make_directory_with_parents()) {
-                throw file_creation_error(Glib::ustring::compose("Failed to create directory %1", dir->get_path()));
+                throw file_creation_error(Glib::ustring::compose(_("Failed to create directory %1"), dir->get_path()));
+            }
+        }
+
+        static Glib::RefPtr<Gdk::Pixbuf> get_icon_for_file(const Glib::RefPtr<Gio::File> &file, int size) {
+            auto theme = Gtk::IconTheme::get_default();
+            auto info = theme->lookup_icon(file->query_info("standard::icon")->get_icon(), size);
+            if(info) {
+                return info.load_icon();
+            } else if(file->query_file_type() == Gio::FileType::FILE_TYPE_DIRECTORY) {
+                return theme->load_icon("folder", size);
+            } else {
+                return theme->load_icon("document", size);
             }
         }
 

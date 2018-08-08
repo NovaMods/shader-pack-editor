@@ -107,7 +107,12 @@ namespace shader_editor {
             return EXIT_SUCCESS;
         }
 
+        current_project->on_load();
         main_window window;
         return gtk_application->run(*window.get_window());
+    }
+
+    std::shared_ptr<shader_pack_project> application::get_current_project() {
+        return current_project;
     }
 }

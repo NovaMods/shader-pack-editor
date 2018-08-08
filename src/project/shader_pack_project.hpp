@@ -8,9 +8,15 @@
 #include <memory>
 #include <glibmm.h>
 #include "../util/result.hpp"
+#include "project_file_tree.hpp"
 
 namespace shader_editor {
     class shader_pack_project {
+    private:
+        std::shared_ptr<project_file_tree> file_tree;
+
+        shader_pack_project();
+
     public:
         static type_result<std::shared_ptr<shader_pack_project>> from_file(Glib::ustring file_path);
         static std::shared_ptr<shader_pack_project> from_scratch();
@@ -18,8 +24,11 @@ namespace shader_editor {
         Glib::ustring name;
         Glib::ustring root;
 
-    private:
-        shader_pack_project();
+        ~shader_pack_project();
+
+        void save_project_file();
+        void on_load();
+        std::shared_ptr<project_file_tree> get_file_tree();
     };
 }
 

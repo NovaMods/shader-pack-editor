@@ -6,7 +6,7 @@
     <property name="can_focus">False</property>
     <property name="relative_to">new_project</property>
     <child>
-      <object class="GtkGrid">
+      <object class="GtkGrid" id="popover_content">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
