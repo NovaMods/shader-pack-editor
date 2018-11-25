@@ -25,6 +25,13 @@ namespace shader_editor {
            gtk_source_buffer_set_style_scheme(source_buffer->gobj(), scheme);
         });
         gtk_source_buffer_set_style_scheme(source_buffer->gobj(), application::instance->get_source_style_scheme());
+
+        auto languageId = file->get_basename().substr(file->get_basename().find_last_of('.') + 1);
+        auto *language = gtk_source_language_manager_get_language(application::instance->get_programming_language_manager()->gobj(), languageId.c_str());
+        if(language) {
+            gtk_source_buffer_set_language(source_buffer->gobj(), language);
+        }
+        source_buffer->set_highlight_syntax(true);
     }
 
     generic_file_editor::~generic_file_editor() {

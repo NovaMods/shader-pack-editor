@@ -14,6 +14,7 @@
 #include "../project/shader_pack_project.hpp"
 #include "../window/main_window.hpp"
 #include <sigc++/sigc++.h>
+#include <gtksourceviewmm.h>
 
 namespace shader_editor {
     class application {
@@ -26,6 +27,7 @@ namespace shader_editor {
         std::shared_ptr<shader_pack_project> current_project;
         std::shared_ptr<main_window> window;
         GtkSourceStyleScheme *source_style_scheme;
+        Glib::RefPtr<Gsv::LanguageManager> programming_language_manager;
 
         application(int argc, char **argv);
 
@@ -48,6 +50,8 @@ namespace shader_editor {
 
         void set_source_style_scheme(GtkSourceStyleScheme *scheme);
         GtkSourceStyleScheme *get_source_style_scheme();
+
+        Glib::RefPtr<Gsv::LanguageManager> get_programming_language_manager();
     };
 }
 
