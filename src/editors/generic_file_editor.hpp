@@ -21,6 +21,7 @@ namespace shader_editor {
         Glib::RefPtr<Gio::FileMonitor> file_monitor;
         void on_file_changed(const Glib::RefPtr<Gio::File>& file ,const Glib::RefPtr<Gio::File>& other_file, Gio::FileMonitorEvent event);
 
+        sigc::connection theme_change_connection;
     public:
         explicit generic_file_editor(const Glib::RefPtr<Gio::File> &file);
         ~generic_file_editor();

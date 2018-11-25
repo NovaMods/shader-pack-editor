@@ -20,9 +20,13 @@ namespace shader_editor {
         get_widget("window", window);
         get_widget("editor_notebook", editor_notebook);
 
-        Gtk::Widget *style_chooser_button = Gtk::manage(Glib::wrap(GTK_WIDGET(gtk_source_style_scheme_chooser_button_new())));
+        Gtk::Button *style_chooser_button = Gtk::manage(Glib::wrap(GTK_BUTTON(gtk_source_style_scheme_chooser_button_new())));
         style_chooser_button->show_all();
         get_widget<Gtk::HeaderBar>("headerbar")->pack_end(*style_chooser_button);
+        application::instance->set_source_style_scheme(gtk_source_style_scheme_chooser_get_style_scheme(GTK_SOURCE_STYLE_SCHEME_CHOOSER(style_chooser_button->gobj())));
+        style_chooser_button->connect_property_changed("style-scheme", [style_chooser_button]{
+            application::instance->set_source_style_scheme(gtk_source_style_scheme_chooser_get_style_scheme(GTK_SOURCE_STYLE_SCHEME_CHOOSER(style_chooser_button->gobj())));
+        });
     }
 
     Gtk::Window *main_window::get_window() {

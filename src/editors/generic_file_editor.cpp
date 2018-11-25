@@ -3,6 +3,7 @@
 //
 
 #include "generic_file_editor.hpp"
+#include "../application/application.hpp"
 #include <gtksourceviewmm.h>
 #include <iostream>
 
@@ -19,9 +20,16 @@ namespace shader_editor {
         file_monitor->signal_changed().connect(sigc::mem_fun(this, &generic_file_editor::on_file_changed));
 
         set_title(file->get_basename());
+
+        theme_change_connection = application::instance->signal_theme_changed().connect([&](GtkSourceStyleScheme *scheme){
+           gtk_source_buffer_set_style_scheme(source_buffer->gobj(), scheme);
+        });
+        gtk_source_buffer_set_style_scheme(source_buffer->gobj(), application::instance->get_source_style_scheme());
     }
 
-    generic_file_editor::~generic_file_editor() {}
+    generic_file_editor::~generic_file_editor() {
+        theme_change_connection.disconnect();
+    }
 
     Gtk::Widget *generic_file_editor::get_view() {
         return &source_view;

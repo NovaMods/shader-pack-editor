@@ -120,4 +120,17 @@ namespace shader_editor {
     std::shared_ptr<main_window> application::get_window() {
         return window;
     }
+
+    void application::set_source_style_scheme(GtkSourceStyleScheme *scheme) {
+        source_style_scheme = scheme;
+        _signal_theme_changed.emit(scheme);
+    }
+
+    GtkSourceStyleScheme *application::get_source_style_scheme() {
+        return source_style_scheme;
+    }
+
+    application::signal_theme_changed_t application::signal_theme_changed() {
+        return _signal_theme_changed;
+    }
 }
