@@ -13,7 +13,7 @@ namespace shader_editor {
 
     void project_file_tree::stop_monitoring() {
         for(const auto &[file, monitor] : file_monitors) {
-            stop_monitoring(Gio::File::create_for_path(file));
+            stop_monitoring(file);
         }
     }
 
@@ -23,19 +23,19 @@ namespace shader_editor {
         }
 
         if(file->get_parent()->get_path() == root->get_path()) {
-            auto row = *(store->append());
+            auto row = *store->append();
             row[column_templates.file_column] = file->query_info()->get_display_name();
             row[column_templates.icon_column] = file_utils::get_icon_for_file(file, 16);
-            rows.insert(std::make_pair(file->get_path(), row));
+            rows[file->get_path()] = row;
         } else {
             if(rows.find(file->get_parent()->get_path()) == rows.end()) {
                 g_warning(Glib::ustring::compose("Not adding %1 because the parent %2 is not in rows", file->get_path(), file->get_parent()->get_path()).c_str());
             } else {
                 auto parent = rows.at(file->get_parent()->get_path());
-                auto row = *(store->append(parent.children()));
+                auto row = *store->append(parent.children());
                 row[column_templates.file_column] = file->query_info()->get_display_name();
                 row[column_templates.icon_column] = file_utils::get_icon_for_file(file, 16);
-                rows.insert(std::make_pair(file->get_path(), row));
+                rows[file->get_path()] = row;
             }
         }
     }
@@ -55,7 +55,15 @@ namespace shader_editor {
     void project_file_tree::remove_file_from_tree(const std::string &path) {
         if(rows.find(path) != rows.end()) {
             auto row = rows.at(path);
-            store->erase(row);
+            store->foreach_iter([&](Gtk::TreeModel::iterator iter){
+                // This is required due to the iterator becoming invalid
+                //  but equal still being able to find out that it is the same
+                if(row.equal(iter)) {
+                    store->erase(iter);
+                    return true;
+                }
+                return false;
+            });
         }
     }
 
@@ -84,21 +92,12 @@ namespace shader_editor {
     }
 
     void project_file_tree::file_updated(Glib::RefPtr<Gio::File> file, Glib::RefPtr<Gio::File> other_file, Gio::FileMonitorEvent event) {
-        std::cout << ">>> File change event >>>\n";
-        if (file) {
-            std::cout << "File: " << file->get_path() << "\n";
-        }
-        if (other_file) {
-            std::cout << "Other file: " << other_file->get_path() << "\n";
-        }
-        std::cout << "Event: " << event << "\n";
-        std::cout << "<<< File change event <<<" << std::endl;
-
         if(event == Gio::FileMonitorEvent::FILE_MONITOR_EVENT_CREATED) {
             if(file->query_file_type() == Gio::FileType::FILE_TYPE_DIRECTORY) {
-                start_monitoring(file);
+                add_directory_recursive(file);
+            } else {
+                add_file_to_tree(file);
             }
-            add_file_to_tree(file);
         } else if(event == Gio::FileMonitorEvent::FILE_MONITOR_EVENT_DELETED) {
             stop_monitoring(file);
             remove_remaining(file);

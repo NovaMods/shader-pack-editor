@@ -8,6 +8,7 @@
 #include <glib/gi18n.h>
 #include <gtkmm.h>
 #include <utility>
+#include "../application/application.hpp"
 
 namespace shader_editor {
     class file_utils {
@@ -34,8 +35,13 @@ namespace shader_editor {
         }
 
         static Glib::RefPtr<Gdk::Pixbuf> get_icon_for_file(const Glib::RefPtr<Gio::File> &file, int size) {
-            auto theme = Gtk::IconTheme::get_default();
-            auto info = theme->lookup_icon(file->query_info("standard::icon")->get_icon(), size);
+            Glib::RefPtr<Gtk::IconTheme> theme;
+            if(application::instance && application::instance->get_window()) {
+                theme = Gtk::IconTheme::get_for_screen(application::instance->get_window()->get_window()->get_screen());
+            } else {
+                theme = Gtk::IconTheme::get_default();
+            }
+            auto info = theme->lookup_icon(file->query_info("standard::icon")->get_icon(), size, Gtk::IconLookupFlags::ICON_LOOKUP_USE_BUILTIN);
             if(info) {
                 return info.load_icon();
             } else if(file->query_file_type() == Gio::FileType::FILE_TYPE_DIRECTORY) {

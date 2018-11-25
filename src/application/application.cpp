@@ -65,7 +65,7 @@ namespace shader_editor {
 
         {
             GError *err = nullptr;
-            // At the moment this functionality is not implemented in giomm, so wrap the C object
+            // At the moment this functionality is not implemented in glibmm, so wrap the C object
             Glib::RefPtr<Gio::SettingsSchemaSource> schema_source =
                     Glib::wrap(g_settings_schema_source_new_from_directory("config", g_settings_schema_source_get_default(), FALSE, &err));
             if(err) {
@@ -107,12 +107,17 @@ namespace shader_editor {
             return EXIT_SUCCESS;
         }
 
+        window = std::make_shared<main_window>();
         current_project->on_load();
-        main_window window;
-        return gtk_application->run(*window.get_window());
+        window->project_loaded();
+        return gtk_application->run(*(window->get_window()));
     }
 
     std::shared_ptr<shader_pack_project> application::get_current_project() {
         return current_project;
+    }
+
+    std::shared_ptr<main_window> application::get_window() {
+        return window;
     }
 }

@@ -88,7 +88,7 @@ namespace shader_editor {
 
     void shader_pack_project::on_load() {
         save_project_file();
-        file_tree = std::unique_ptr<project_file_tree>(new project_file_tree(root));
+        file_tree = std::shared_ptr<project_file_tree>(new project_file_tree(root));
         file_tree->reload();
     }
 
