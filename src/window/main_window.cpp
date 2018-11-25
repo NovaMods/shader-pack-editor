@@ -5,10 +5,6 @@
 #include "main_window.hpp"
 #include "../application/application.hpp"
 #include "../editors/generic_file_editor.hpp"
-
-#ifdef GTK_SOURCE_H_INSIDE
-#   undef GTK_SOURCE_H_INSIDE
-#endif
 #include <gtksourceview/gtksource.h>
 
 namespace shader_editor {

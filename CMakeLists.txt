@@ -4,7 +4,7 @@ project(nova-shader-editor)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTKMM gtkmm-3.0 REQUIRED)
-pkg_check_modules(GTKSOURCEVIEWMM gtksourceviewmm-3.0 REQUIRED)
+pkg_check_modules(GTKSOURCEVIEW gtksourceview-4 REQUIRED)
 
 function(po_to_mo LANGUAGE)
     add_custom_command (
@@ -15,12 +15,12 @@ function(po_to_mo LANGUAGE)
     )
 endfunction()
 
-link_directories(${GTKMM_LIBRARY_DIRS} ${GTKSOURCEVIEWMM_LIBRARY_DIRS})
+link_directories(${GTKMM_LIBRARY_DIRS} ${GTKSOURCEVIEW_LIBRARY_DIRS})
 
 set(THIRD_PARTY_INCLUDE_DIRS
         3rdparty/json/include)
 
-include_directories(${GTKMM_INCLUDE_DIRS} ${GTKSOURCEVIEWMM_INCLUDE_DIRS} ${THIRD_PARTY_INCLUDE_DIRS})
+include_directories(${GTKMM_INCLUDE_DIRS} ${GTKSOURCEVIEW_INCLUDE_DIRS} ${THIRD_PARTY_INCLUDE_DIRS})
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -66,5 +66,5 @@ add_custom_command (
         COMMAND glib-compile-resources --target=resources.h --c-name=nova --generate gresource.xml)
 
 add_dependencies(nova-shader-editor nova-shader-editor-resources-gen)
-target_link_libraries(nova-shader-editor ${GTKMM_LIBRARIES} ${GTKSOURCEVIEWMM_LIBRARIES})
-target_compile_definitions(nova-shader-editor PRIVATE GTK_SOURCE_H_INSIDE=1 GTKMM_DISABLE_DEPRECATED=1)
+target_link_libraries(nova-shader-editor ${GTKMM_LIBRARIES} ${GTKSOURCEVIEW_LIBRARIES})
+target_compile_definitions(nova-shader-editor PRIVATE GTKMM_DISABLE_DEPRECATED=1)

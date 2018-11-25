@@ -108,7 +108,7 @@ namespace shader_editor {
         }
 
         window = std::make_shared<main_window>();
-        programming_language_manager = Gsv::LanguageManager::create();
+        programming_language_manager = gtk_source_language_manager_new();
         current_project->on_load();
         window->project_loaded();
         return gtk_application->run(*(window->get_window()));
@@ -135,7 +135,7 @@ namespace shader_editor {
         return _signal_theme_changed;
     }
 
-    Glib::RefPtr<Gsv::LanguageManager> application::get_programming_language_manager() {
+    GtkSourceLanguageManager *application::get_programming_language_manager() {
         return programming_language_manager;
     }
 }
